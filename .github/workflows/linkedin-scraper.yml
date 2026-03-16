@@ -2,8 +2,9 @@ name: LinkedIn Scraper Daily
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # 10 AM UTC daily
-  workflow_dispatch:  # Allow manual trigger
+    # 10 AM GMT+8 is 2 AM UTC
+    - cron: '0 2 * * *'  
+  workflow_dispatch: # Allow manual trigger for testing
 
 jobs:
   scrape:
@@ -12,11 +13,10 @@ jobs:
     steps:
       - name: Run LinkedIn Scraper
         run: |
-          curl -X POST https://api.relevanceai.com/tools/run \
-            -H "Authorization: Bearer ${{ secrets.RELEVANCE_AI_API_KEY }}" \
+          curl --location --request POST 'https://api.relevanceai.com/v1/studios/44b03957-a11e-4ebc-bc57-7a0dd549ee63/trigger_v2' \
+            -H "Authorization: ${{ secrets.RELEVANCE_AI_API_KEY }}" \
             -H "Content-Type: application/json" \
             -d '{
-              "tool_id": "44b03957-a11e-4ebc-bc57-7a0dd549ee63",
               "params": {
                 "linkedin_creator_urls": [
                   "https://www.linkedin.com/in/dibya-ranjan-rath-b4b922100/",
@@ -26,11 +26,11 @@ jobs:
                   "https://www.linkedin.com/in/paul-couvert/"
                 ],
                 "posts_per_creator": 5,
-                "rapidapi_key": "${{ secrets.RAPIDAPI_KEY }}",
-                "schedule_time_utc": "10:00"
-              }
+                "rapidapi_key": "${{ secrets.RAPIDAPI_KEY }}"
+              },
+              "project": "${{ secrets.RELEVANCE_PROJECT_ID }}"
             }'
       
-      - name: Check Response
+      - name: Check Status
         if: failure()
-        run: echo "LinkedIn scraper failed. Check logs above."
+        run: echo "The workflow failed. Verify your API Key and Project ID in GitHub Secrets."
