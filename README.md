@@ -2,7 +2,7 @@
 
 🎯 How to quickly test and debug
 
-Confirm the token locally
+Confirm the token locally </br>
 ✅Copy the secret locally and run the same curl command from your machine (replace token) to confirm the API accepts it.
 ✅Confirm header format the API expects
 ✅Check your API docs — try "Authorization: Bearer <token>" if you are currently sending the raw token.
