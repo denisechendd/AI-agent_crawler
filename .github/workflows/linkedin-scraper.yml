@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Run LinkedIn Scraper
         run: |
-          curl --location --request POST 'https://api.relevanceai.com/v1/studios/44b03957-a11e-4ebc-bc57-7a0dd549ee63/trigger_v2' \
+          curl --location --request POST 'https://api.dayschedule.com/api/v1/scheduled-triggers/' \
           --header 'Authorization: ${{ secrets.RELEVANCE_AI_AUTH_TOKEN }}' \
           --header 'Content-Type: application/json' \
           --data-raw '{
@@ -28,5 +28,7 @@ jobs:
               "posts_per_creator": 5,
               "rapidapi_key": "${{ secrets.RAPIDAPI_KEY }}"
             },
-            "project": "c0eb2dac-f377-4c6c-822f-6714b68bbc6e"
+            "project": "c0eb2dac-f377-4c6c-822f-6714b68bbc6e",
+            "enabled": true,
+            "timezone": "Asia/Shanghai"
           }'
