@@ -2,7 +2,8 @@ name: LinkedIn Scraper Daily
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # 10 AM GMT+8 (which is 2 AM UTC)
+    # 10 AM GMT+8 is 2 AM UTC
+    - cron: '0 2 * * *'  
   workflow_dispatch: 
 
 jobs:
@@ -12,20 +13,20 @@ jobs:
     steps:
       - name: Run LinkedIn Scraper
         run: |
-          curl --location --request POST 'https://api-bcbe5a.stack.relevanceai.com/v1/studios/44b03957-a11e-4ebc-bc57-7a0dd549ee63/trigger_v2' \
-            -H "Authorization: ${{ secrets.RELEVANCE_AI_AUTH_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "params": {
-                "linkedin_creator_urls": [
-                  "https://www.linkedin.com/in/dibya-ranjan-rath-b4b922100/",
-                  "https://www.linkedin.com/in/aaditsh/",
-                  "https://www.linkedin.com/in/a-banks/",
-                  "https://www.linkedin.com/in/rowancheung/",
-                  "https://www.linkedin.com/in/paul-couvert/"
-                ],
-                "posts_per_creator": 5,
-                "rapidapi_key": "${{ secrets.RAPIDAPI_KEY }}"
-              },
-              "project": "c0eb2dac-f377-4c6c-822f-6714b68bbc6e"
-            }'
+          curl --location --request POST 'https://api.relevanceai.com/v1/studios/44b03957-a11e-4ebc-bc57-7a0dd549ee63/trigger_v2' \
+          --header 'Authorization: ${{ secrets.RELEVANCE_AI_AUTH_TOKEN }}' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+            "params": {
+              "linkedin_creator_urls": [
+                "https://www.linkedin.com/in/dibya-ranjan-rath-b4b922100/",
+                "https://www.linkedin.com/in/aaditsh/",
+                "https://www.linkedin.com/in/a-banks/",
+                "https://www.linkedin.com/in/rowancheung/",
+                "https://www.linkedin.com/in/paul-couvert/"
+              ],
+              "posts_per_creator": 5,
+              "rapidapi_key": "${{ secrets.RAPIDAPI_KEY }}"
+            },
+            "project": "c0eb2dac-f377-4c6c-822f-6714b68bbc6e"
+          }'
