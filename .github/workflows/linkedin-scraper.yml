@@ -1,0 +1,36 @@
+name: LinkedIn Scraper Daily
+
+on:
+  schedule:
+    - cron: '0 10 * * *'  # 10 AM UTC daily
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Run LinkedIn Scraper
+        run: |
+          curl -X POST https://api.relevanceai.com/tools/run \
+            -H "Authorization: Bearer ${{ secrets.RELEVANCE_AI_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "tool_id": "44b03957-a11e-4ebc-bc57-7a0dd549ee63",
+              "params": {
+                "linkedin_creator_urls": [
+                  "https://www.linkedin.com/in/dibya-ranjan-rath-b4b922100/",
+                  "https://www.linkedin.com/in/aaditsh/",
+                  "https://www.linkedin.com/in/a-banks/",
+                  "https://www.linkedin.com/in/rowancheung/",
+                  "https://www.linkedin.com/in/paul-couvert/"
+                ],
+                "posts_per_creator": 5,
+                "rapidapi_key": "${{ secrets.RAPIDAPI_KEY }}",
+                "schedule_time_utc": "10:00"
+              }
+            }'
+      
+      - name: Check Response
+        if: failure()
+        run: echo "LinkedIn scraper failed. Check logs above."
